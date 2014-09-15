@@ -1,9 +1,8 @@
-<img src="http://office.nousguide.com/nouslogosmall.png" alt="NOUSguide Inc." title="NOUSguide Inc." title" style="display:block; margin: 10px auto 30px auto;" class="center">
 
 # NGTabBarController
 
 [Matthias Tretter](https://github.com/myell0w/) ([@myell0w](http://twitter.com/myell0w))
-的库只能在四边放tabBar，我的这个库的目的是四个边可以放自定义的view。
+的库在四边放tabBar，我的这个库的目的是四个边可以放自定义的view。
 
 ## Usage
 

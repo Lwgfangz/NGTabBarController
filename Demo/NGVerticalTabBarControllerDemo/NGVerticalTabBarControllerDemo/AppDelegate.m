@@ -40,6 +40,7 @@
     
     tabBarController.viewControllers = viewController;
     tabBarController.tabBar.drawGloss = NO;
+    tabBarController.tabBar.itemPadding = 1;//默认是0
     tabBarController.tabBarPosition = NGTabBarPositionTop;
     tabBarController.tabBar.tintColor = [UIColor grayColor];
     
