@@ -74,7 +74,7 @@
     [super layoutSubviews];
     
     CGFloat currentFrameLeft = 0.f;
-    CGFloat currentFrameTop = 0.f;
+    CGFloat currentFrameTop = self.itemTopPosition;
     CGFloat totalDimension = 0.f;
     // we change item padding in strategy evenly distributed but don't want to change iVar
     CGFloat appliedItemPadding = self.itemPadding;
@@ -82,42 +82,53 @@
     // backgroundView gets same frame as tabBar
     self.backgroundView.frame = self.bounds;
     
-    if (self.layoutStrategy == NGTabBarLayoutStrategyEvenlyDistributed || self.layoutStrategy == NGTabBarLayoutStrategyCentered) {
+    if (self.layoutStrategy == NGTabBarLayoutStrategyEvenlyDistributed
+        || self.layoutStrategy == NGTabBarLayoutStrategyCentered)
+    {
         // compute total dimension needed
-        for (NGTabBarItem *item in self.items) {
+        for (NGTabBarItem *item in self.items)
+        {
             totalDimension += [self dimensionToBeConsideredOfItem:item];
             
             // we don't take padding only into account if we want to evenly distribute items
-            if (self.layoutStrategy != NGTabBarLayoutStrategyEvenlyDistributed) {
+            if (self.layoutStrategy != NGTabBarLayoutStrategyEvenlyDistributed)
+            {
                 totalDimension += self.itemPadding;
             }
         }
         
         // for evenly distributed items we calculate a new item padding
-        if (self.layoutStrategy == NGTabBarLayoutStrategyEvenlyDistributed) {
+        if (self.layoutStrategy == NGTabBarLayoutStrategyEvenlyDistributed)
+        {
             // the total padding needed for the whole tabBar
             CGFloat totalPadding = NGTabBarIsVertical(self.position) ? self.bounds.size.height - totalDimension : self.bounds.size.width - totalDimension;
             
             // we apply the padding (items.count - 1) times (always between two items)
-            if (self.items.count > 1) {
+            if (self.items.count > 1)
+            {
                 appliedItemPadding = MAX(0.f,totalPadding / (self.items.count - 1));
             }
         }
         
-        else if (self.layoutStrategy == NGTabBarLayoutStrategyCentered) {
+        else if (self.layoutStrategy == NGTabBarLayoutStrategyCentered)
+        {
             // we only add padding between icons but we added it for each item in the loop above
             totalDimension -= appliedItemPadding;
             
-            if (NGTabBarIsVertical(self.position)) {
+            if (NGTabBarIsVertical(self.position))
+            {
                 currentFrameTop = floorf((self.bounds.size.height-totalDimension)/2.f);
-            } else {
+            }
+            else
+            {
                 currentFrameLeft = floorf((self.bounds.size.width-totalDimension)/2.f);
             }
         }
     }
     
     // re-position each item starting from current top/left
-    for (NGTabBarItem *item in self.items) {
+    for (NGTabBarItem *item in self.items)
+    {
         CGRect frame = item.frame;
         
         frame.origin.y = currentFrameTop;
@@ -342,7 +353,9 @@
     }
 }
 
-- (void)createGradient {
+//创建渐变
+- (void)createGradient
+{
     if (_gradientRef != NULL) {
         CFRelease(_gradientRef);
     }
@@ -383,20 +396,27 @@
     }
 }
 
-- (void)updateItemHighlight {
-    if (self.selectedItemIndex != NSNotFound) {
+
+//选中的高亮,是一个view
+- (void)updateItemHighlight
+{
+    if (self.selectedItemIndex != NSNotFound)
+    {
         CGRect itemRect = [[self.items objectAtIndex:self.selectedItemIndex] frame]; 
         
-        if (_itemHighlightView == nil) {
+        if (_itemHighlightView == nil)
+        {
             self.itemHighlightView = [[UIView alloc] initWithFrame:CGRectZero];
-            self.itemHighlightView.layer.cornerRadius = 5.f;
+            self.itemHighlightView.layer.cornerRadius = self.itemHighlightRadius;
             [self addSubview:self.itemHighlightView];
         }
         
         self.itemHighlightView.backgroundColor = self.itemHighlightColor;
-        self.itemHighlightView.frame = NGTabBarIsVertical(self.position) ? CGRectInset(itemRect, 2.f, 0.f) : CGRectInset(itemRect, 0.f, 2.f);
+        self.itemHighlightView.frame = NGTabBarIsVertical(self.position) ? CGRectInset(itemRect, self.itemHighlightSpace, 0.f) : CGRectInset(itemRect, 0.f, self.itemHighlightSpace);
         self.itemHighlightView.hidden = !self.drawItemHighlight;
-    } else {
+    }
+    else
+    {
         self.itemHighlightView.hidden = YES;
     }
 }

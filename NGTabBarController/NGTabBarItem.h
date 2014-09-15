@@ -7,7 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
-
+//Item是一个View
 @interface NGTabBarItem : UIControl
 
 @property (nonatomic, strong) UIImage *image;

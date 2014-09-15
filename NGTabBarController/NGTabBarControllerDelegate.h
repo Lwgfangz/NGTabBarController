@@ -15,6 +15,7 @@
 
 @required
 
+//每个item的尺寸
 /** Asks the delegate for the size of the given item */
 - (CGSize)tabBarController:(NGTabBarController *)tabBarController
 sizeOfItemForViewController:(UIViewController *)viewController

@@ -29,7 +29,7 @@ static char tabBarImageViewKey;
 
 // re-defined as read/write
 @property (nonatomic, strong, readwrite) NGTabBar *tabBar;
-@property (nonatomic, strong) NSArray *tabBarItems;
+@property (nonatomic, strong) NSArray *tabBarItems;//???
 /** the (computed) frame of the sub-viewcontrollers */
 @property (nonatomic, readonly) CGRect childViewControllerFrame;
 @property (nonatomic, assign) NSUInteger oldSelectedIndex;
@@ -249,8 +249,27 @@ static char tabBarImageViewKey;
             }
         }
         
-        self.tabBarItems = [viewControllers valueForKey:@"ng_tabBarItem"];
         
+        //self.tabBarItems = [viewControllers valueForKey:@"ng_tabBarItem"];
+        //tabBar设计成两种状态,tabBar和自定义view
+        //如果有一个barItem为空,其他都设置为空,为自定义view状态
+        NSMutableArray *array = [viewControllers valueForKey:@"ng_tabBarItem"];
+        BOOL isCustomView = NO;
+        for(id obj in array)
+        {
+            if([obj class] == [NSNull class])
+            {
+                isCustomView = YES;
+            }
+        }
+        if(isCustomView)
+        {
+            self.tabBarItems = nil;
+        }
+        else
+        {
+            self.tabBarItems = array;
+        }
         _viewControllers = [NSMutableArray arrayWithArray:viewControllers];
         
         CGRect childViewControllerFrame = self.childViewControllerFrame;
@@ -613,13 +632,17 @@ static char tabBarImageViewKey;
     return animationOptions;
 }
 
+//设置tabBar
+//dimension = w 或 h
 - (void)setupTabBarForPosition:(NGTabBarPosition)position {
     CGRect frame = CGRectZero;
     UIViewAutoresizing autoresizingMask = UIViewAutoresizingNone;
     CGFloat dimension = [self widthOrHeightOfTabBarForPosition:position];
     
-    switch (position) {
-        case NGTabBarPositionTop: {
+    switch (position)
+    {
+        case NGTabBarPositionTop:
+        {
             frame = CGRectMake(0.f, 0.f, self.view.bounds.size.width, dimension);
             autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleBottomMargin;
             break;
@@ -649,7 +672,8 @@ static char tabBarImageViewKey;
     self.tabBar.autoresizingMask = autoresizingMask;
     [self.tabBar setNeedsLayout];
     
-    for (NSUInteger index = 0; index < self.viewControllers.count; index++) {
+    for (NSUInteger index = 0; index < self.viewControllers.count; index++)
+    {
         UIViewController *viewController = [self.viewControllers objectAtIndex:index];
         NGTabBarItem *item = [self.tabBarItems objectAtIndex:index];
         
@@ -674,16 +698,22 @@ static char tabBarImageViewKey;
     }
 }
 
-- (CGFloat)widthOrHeightOfTabBarForPosition:(NGTabBarPosition)position {
+//tabBar垂直的时候给出宽度,水平的时候给出高度.而宽度和高度由item的宽度和高度一样. 不考虑padding?
+- (CGFloat)widthOrHeightOfTabBarForPosition:(NGTabBarPosition)position
+{
     CGFloat dimension = kNGTabBarControllerDefaultWidth;
     
     // first item is responsible for dimension of tabBar, all must be equal (will not be checked)
-    if (self.viewControllers.count > 0) {
+    if (self.viewControllers.count > 0)
+    {
         CGSize size = [self delegatedSizeOfItemForViewController:[self.viewControllers objectAtIndex:0] atIndex:0 position:position];
         
-        if (NGTabBarIsVertical(position)) {
+        if (NGTabBarIsVertical(position))
+        {
             dimension = size.width;
-        } else {
+        }
+        else
+        {
             dimension = size.height;
         }
     }

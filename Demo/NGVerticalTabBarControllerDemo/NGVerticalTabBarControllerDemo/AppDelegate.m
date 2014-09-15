@@ -7,8 +7,8 @@
 //
 
 #import "AppDelegate.h"
-#import "NGTestTabBarController.h"
 #import "NGColoredViewController.h"
+#import "NGTabBarController.h"
 
 @implementation AppDelegate
 
@@ -24,6 +24,7 @@
     NGColoredViewController *vc3 = [[NGColoredViewController alloc] initWithNibName:nil bundle:nil];
     NGColoredViewController *vc4 = [[NGColoredViewController alloc] initWithNibName:nil bundle:nil];
     
+    /*
     vc1.ng_tabBarItem = [NGTabBarItem itemWithTitle:@"Live" image:[UIImage imageNamed:@"liveradio"]];
     vc2.ng_tabBarItem = [NGTabBarItem itemWithTitle:@"Favorites" image:[UIImage imageNamed:@"myradio"]];
     vc3.ng_tabBarItem = [NGTabBarItem itemWithTitle:@"News" image:[UIImage imageNamed:@"news"]];
@@ -31,13 +32,21 @@
     
     vc1.ng_tabBarItem.selectedImageTintColor = [UIColor yellowColor];
     vc1.ng_tabBarItem.selectedTitleColor = [UIColor yellowColor];
+     */
     
     NSArray *viewController = [NSArray arrayWithObjects:vc1,vc2,vc3,vc4,nil];
     
-    NGTabBarController *tabBarController = [[NGTestTabBarController alloc] initWithDelegate:self];
+    NGTabBarController *tabBarController = [[NGTabBarController alloc] initWithDelegate:self];
     
     tabBarController.viewControllers = viewController;
+    tabBarController.tabBar.drawGloss = NO;
+    tabBarController.tabBarPosition = NGTabBarPositionTop;
+    tabBarController.tabBar.tintColor = [UIColor grayColor];
     
+    
+    UIView *view = [[UITextField alloc]initWithFrame:CGRectMake(0, 0, 50, 50)];
+    view.backgroundColor = [UIColor redColor];
+    [tabBarController.tabBar addSubview:view];
     self.window.rootViewController = tabBarController;
     self.window.backgroundColor = [UIColor whiteColor];
     [self.window makeKeyAndVisible];
@@ -56,7 +65,7 @@ sizeOfItemForViewController:(UIViewController *)viewController
     if (NGTabBarIsVertical(position)) {
         return CGSizeMake(150.f, 60.f);
     } else {
-        return CGSizeMake(60.f, 49.f);
+        return CGSizeMake(60.f, 50);
     }
 }
 
