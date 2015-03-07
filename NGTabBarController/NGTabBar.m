@@ -235,6 +235,7 @@
     }
 }
 
+//选择了某个item
 - (void)selectItemAtIndex:(NSUInteger)index {
     [self deselectSelectedItem];
     
@@ -247,6 +248,7 @@
     }
 }
 
+//先取消选择
 - (void)deselectSelectedItem {
     if (self.selectedItemIndex < self.items.count) {
         NGTabBarItem *selectedItem = [self.items objectAtIndex:self.selectedItemIndex];

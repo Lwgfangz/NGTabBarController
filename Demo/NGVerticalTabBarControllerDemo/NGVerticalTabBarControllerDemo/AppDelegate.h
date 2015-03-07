@@ -9,8 +9,8 @@
 #import <UIKit/UIKit.h>
 #import "NGTabBarController.h"
 
-@interface AppDelegate : UIResponder <UIApplicationDelegate, NGTabBarControllerDelegate>
-
+@interface AppDelegate : UIResponder <UIApplicationDelegate, NGTabBarControllerDelegate,UITextFieldDelegate>
 @property (strong, nonatomic) UIWindow *window;
+@property (strong,nonatomic)NGTabBarController *tabBarController;
 
 @end

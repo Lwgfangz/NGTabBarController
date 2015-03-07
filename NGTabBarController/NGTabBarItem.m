@@ -145,16 +145,19 @@
 ////////////////////////////////////////////////////////////////////////
 #pragma mark - UIControl
 ////////////////////////////////////////////////////////////////////////
-
+//tabbar item本身的设定,与viewController的切换没有什么关系
 - (void)setSelected:(BOOL)selected {
     [super setSelected:selected];
     
     // somehow self.selected always returns NO, so we store it in our own iVar
     _selectedByUser = selected;
     
-    if (selected) {
+    if (selected)
+    {
         self.titleLabel.textColor = self.selectedTitleColor;
-    } else {
+    }
+    else
+    {
         self.titleLabel.textColor = self.titleColor;
     }
     

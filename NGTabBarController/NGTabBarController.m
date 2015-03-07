@@ -309,6 +309,7 @@ static char tabBarImageViewKey;
     }
 }
 
+//设定index,刷新UI就可以了
 - (void)setSelectedIndex:(NSUInteger)selectedIndex {
     if (selectedIndex != _selectedIndex) {
         self.oldSelectedIndex = _selectedIndex;
@@ -426,23 +427,30 @@ static char tabBarImageViewKey;
 #pragma mark - Private
 ////////////////////////////////////////////////////////////////////////
 
-- (void)updateUI {
-    if (self.selectedIndex != NSNotFound) {
+- (void)updateUI
+{
+    if (self.selectedIndex != NSNotFound)
+    {
         UIViewController *newSelectedViewController = self.selectedViewController;
         [self.tabBar selectItemAtIndex:self.selectedIndex];
         
         // show transition between old and new child viewcontroller
-        if (self.oldSelectedIndex != NSNotFound) {
+        if (self.oldSelectedIndex != NSNotFound)
+        {
             UIViewController *oldSelectedViewController = [self.viewControllers objectAtIndex:self.oldSelectedIndex];
             
-            if (self.containmentAPISupported) { 
+            if (self.containmentAPISupported)
+            {
                 // custom move animation
                 if (self.animation == NGTabBarControllerAnimationMove ||
-                    self.animation == NGTabBarControllerAnimationMoveAndScale) {
+                    self.animation == NGTabBarControllerAnimationMoveAndScale)
+                {
                     CGRect frame = self.childViewControllerFrame;
                     
-                    if (self.oldSelectedIndex < self.selectedIndex) {
-                        if (NGTabBarIsVertical(self.tabBarPosition)) {
+                    if (self.oldSelectedIndex < self.selectedIndex)
+                    {
+                        if (NGTabBarIsVertical(self.tabBarPosition))
+                        {
                             frame.origin.y = frame.size.height;
                         } else {
                             frame.origin.x = frame.size.width;
@@ -681,15 +689,21 @@ static char tabBarImageViewKey;
     }
 }
 
-- (void)handleItemPressed:(id)sender {
+- (void)handleItemPressed:(id)sender
+{
     NSInteger index = [self.tabBarItems indexOfObject:sender];
     BOOL shouldSelect = [self delegatedDecisionIfWeShouldSelectViewController:[self.viewControllers objectAtIndex:index] atIndex:index];
     
-    if (shouldSelect) {
-        if (index != self.selectedIndex) {
+    if (shouldSelect)
+    {
+        if (index != self.selectedIndex)
+        {
             self.selectedIndex = index;
-        } else {
-            if ([self.selectedViewController isKindOfClass:[UINavigationController class]]) {
+        }
+        else
+        {
+            if ([self.selectedViewController isKindOfClass:[UINavigationController class]])
+            {
                 UINavigationController *navigationController = (UINavigationController *)self.selectedViewController;
                 
                 [navigationController popToRootViewControllerAnimated:YES];
@@ -697,6 +711,30 @@ static char tabBarImageViewKey;
         }
     }
 }
+- (void)handleItem:(NSInteger)index
+{
+    //NSInteger index = [self.tabBarItems indexOfObject:sender];
+    BOOL shouldSelect = [self delegatedDecisionIfWeShouldSelectViewController:[self.viewControllers objectAtIndex:index] atIndex:index];
+
+    if (shouldSelect)
+    {
+        if (index != self.selectedIndex)
+        {
+            self.selectedIndex = index;
+        }
+        else
+        {
+            if ([self.selectedViewController isKindOfClass:[UINavigationController class]])
+            {
+                UINavigationController *navigationController = (UINavigationController *)self.selectedViewController;
+
+                [navigationController popToRootViewControllerAnimated:YES];
+            }
+        }
+    }
+}
+
+
 
 //tabBar垂直的时候给出宽度,水平的时候给出高度.而宽度和高度由item的宽度和高度一样. 不考虑padding?
 - (CGFloat)widthOrHeightOfTabBarForPosition:(NGTabBarPosition)position

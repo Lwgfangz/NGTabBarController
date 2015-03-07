@@ -23,6 +23,7 @@
 /** An array of the view controllers displayed by the tab bar */
 @property (nonatomic, copy) NSArray *viewControllers;
 /** The index of the view controller associated with the currently selected tab item. */
+//选择了哪个item,与切换的viewController对应
 @property (nonatomic, assign) NSUInteger selectedIndex;
 /** The view controller associated with the currently selected tab item. */
 @property (nonatomic, unsafe_unretained) UIViewController *selectedViewController;
@@ -47,5 +48,7 @@
 - (id)initWithDelegate:(id<NGTabBarControllerDelegate>)delegate;
 
 - (void)setTabBarHidden:(BOOL)tabBarHidden animated:(BOOL)animated;
+
+- (void)handleItem:(NSInteger)index;
 
 @end

@@ -18,43 +18,68 @@
 {
     self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
     // Override point for customization after application launch.
-    
+
+    /*
     NGColoredViewController *vc1 = [[NGColoredViewController alloc] initWithNibName:nil bundle:nil];
     NGColoredViewController *vc2 = [[NGColoredViewController alloc] initWithNibName:nil bundle:nil];
     NGColoredViewController *vc3 = [[NGColoredViewController alloc] initWithNibName:nil bundle:nil];
     NGColoredViewController *vc4 = [[NGColoredViewController alloc] initWithNibName:nil bundle:nil];
-    
+     */
+    UIViewController *vc1 = [UIViewController new];
+    vc1.view.backgroundColor = [UIColor redColor];
+
+    UIViewController *vc2 = [UIViewController new];
+    vc2.view.backgroundColor = [UIColor greenColor];
+
+    UIViewController *vc3 = [UIViewController new];
+    vc3.view.backgroundColor = [UIColor grayColor];
+
+    UIViewController *vc4 = [UIViewController new];
+    vc4.view.backgroundColor = [UIColor yellowColor];
+
     /*
     vc1.ng_tabBarItem = [NGTabBarItem itemWithTitle:@"Live" image:[UIImage imageNamed:@"liveradio"]];
     vc2.ng_tabBarItem = [NGTabBarItem itemWithTitle:@"Favorites" image:[UIImage imageNamed:@"myradio"]];
     vc3.ng_tabBarItem = [NGTabBarItem itemWithTitle:@"News" image:[UIImage imageNamed:@"news"]];
     vc4.ng_tabBarItem = [NGTabBarItem itemWithTitle:@"On Demand" image:[UIImage imageNamed:@"ondemand"]];
+     */
     
     vc1.ng_tabBarItem.selectedImageTintColor = [UIColor yellowColor];
     vc1.ng_tabBarItem.selectedTitleColor = [UIColor yellowColor];
-     */
+
     
-    NSArray *viewController = [NSArray arrayWithObjects:vc1,vc2,vc3,vc4,nil];
+    NSArray *viewControllers = [NSArray arrayWithObjects:vc1,vc2,vc3,vc4,nil];
     
-    NGTabBarController *tabBarController = [[NGTabBarController alloc] initWithDelegate:self];
+    self.tabBarController = [[NGTabBarController alloc] initWithDelegate:self];
     
-    tabBarController.viewControllers = viewController;
-    tabBarController.tabBar.drawGloss = NO;
-    tabBarController.tabBar.itemPadding = 1;//默认是0
-    tabBarController.tabBarPosition = NGTabBarPositionTop;
-    tabBarController.tabBar.tintColor = [UIColor grayColor];
+    _tabBarController.viewControllers = viewControllers;
+    _tabBarController.tabBar.drawGloss = NO;
+    _tabBarController.tabBar.itemPadding = 1;//默认是0
+    _tabBarController.tabBarPosition = NGTabBarPositionTop;
+    _tabBarController.tabBar.tintColor = [UIColor grayColor];
     
-    
-    UIView *view = [[UITextField alloc]initWithFrame:CGRectMake(0, 0, 50, 50)];
+
+    UITextField *view = [[UITextField alloc]initWithFrame:CGRectMake(0, 0, 50, 50)];
+    view.delegate = self;
     view.backgroundColor = [UIColor redColor];
-    [tabBarController.tabBar addSubview:view];
-    self.window.rootViewController = tabBarController;
+    [_tabBarController.tabBar addSubview:view];
+
+
+    self.window.rootViewController = _tabBarController;
     self.window.backgroundColor = [UIColor whiteColor];
     [self.window makeKeyAndVisible];
     
     return YES;
 }
 
+#pragma mark - UITextFieldDelegate
+
+- (void)textFieldDidBeginEditing:(UITextField *)textField
+{
+    NSLog(@"textFieldDidBeginEditing");
+    [_tabBarController handleItem:2];
+
+}
 ////////////////////////////////////////////////////////////////////////
 #pragma mark - NGTabBarControllerDelegate
 ////////////////////////////////////////////////////////////////////////
